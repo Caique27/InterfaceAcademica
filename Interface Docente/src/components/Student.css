@@ -1,0 +1,54 @@
+.Student-section{
+    border: 1px solid;
+    border-radius: 0.5rem;
+    border-color: #90d3ff;
+    background-color: #24333bf2;
+    flex-grow: 1;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    margin-top: 0.5rem ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between  ;
+    
+}
+.Student-titulo{
+    margin-left: 1rem;
+    display: flex;
+}
+.Student-amount{
+    margin-top: 0.35rem;
+    margin-left: 0.3rem;
+}
+.Student-date{
+    margin-left: 0.95rem; 
+
+    margin-top: -1.2rem;
+}
+.Student-status{
+    margin-top: -2rem;
+    margin-left: 0.95rem; 
+    margin-bottom: 0rem;
+    display: flex;
+    justify-content: space-between;
+}
+.Student-buttons{
+   margin-top: 0.8rem;
+   margin-right: 1rem;
+}
+.Student-description{
+   font-size: 1rem; 
+}
+.dialog-style{
+    background-color: #1B262C;
+    color: #BBE1FA;
+    font-family: kayak sans;
+  }
+  .Student-dialog-buttons{
+    margin-left: 8rem;
+    margin-top: 1rem;
+  }
+
+.Student-done{
+    text-decoration:line-through ;
+}

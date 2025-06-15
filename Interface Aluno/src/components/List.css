@@ -1,0 +1,67 @@
+.List-div{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border: 2px solid;
+  border-radius: 0.5rem;
+  flex-grow: 1;
+  width: 15rem;
+  height: 25rem;
+
+}
+
+.List-tarefas{
+  
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+    
+}
+
+.List-header{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  word-break: break-word;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+ 
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #7eafcf; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background:#92acbf; 
+  }
+
+.List-titulo{
+    margin-left: 1rem;
+    margin-bottom: 0;
+    
+}
+
+.List-icons{
+  display:flex ;
+  flex-direction: row;
+}
+
+
+.dialog-style{
+  background-color: #1B262C;
+  color: #BBE1FA;
+
+}
+.List-dialog-buttons{
+  margin-left: 10rem;
+  margin-top: 1rem;
+}

@@ -1,0 +1,10 @@
+.GradesDialog-info{
+    display: flex;
+    justify-content: space-around;
+}
+.GradesDialog-label{
+    font-size:1rem
+}
+.GradesDialog-value{
+    font-size:1.4rem
+}
