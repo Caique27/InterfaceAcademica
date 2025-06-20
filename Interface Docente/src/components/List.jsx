@@ -14,6 +14,7 @@ function List({ data, approveDisenrollment, updateGrades }) {
         {data.students.map((student) => (
           <Student
             data={student}
+            oferecimento={data.id_oferecimento}
             StudentId={student.id}
             approveDisenrollment={approveDisenrollment}
             updateGrades={updateGrades}

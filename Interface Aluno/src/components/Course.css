@@ -14,6 +14,7 @@
 }
 .Course-titulo{
     margin-left: 1rem;
+    margin-bottom: 5%;
     display: flex;
 }
 .Course-amount{

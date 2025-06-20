@@ -13,32 +13,30 @@ function Course({ data, deleteCourse, requestDisenrollment, CourseId }) {
   return (
     <section className="Course-section">
       <div>
-        <h1 className={"Course-titulo"}>
-          {data.name}
-          <h1 className="Course-description Course-amount">
-            {" "}
-            ({data.credits} créditos)
-          </h1>
-        </h1>
+        <h1 className={"Course-titulo"}>{data.name}</h1>
         <h2 className="Course-description Course-status">
           <p>Situação: </p>
           <p
             style={{
               marginLeft: "1%",
               color:
-                data.status == "Trancada"
+                data.trancamento_aprovado == true
                   ? "#F27373"
-                  : data.status == "Trancamento Solicitado"
+                  : data.trancamento_aprovado == false
                   ? "#F2B273"
                   : "#BBE1FA",
             }}
           >
-            {data.status}
+            {data.trancamento_aprovado == true
+              ? "Trancado"
+              : data.trancamento_aprovado == false
+              ? "Trancamento Solicitado"
+              : data.trancamento_aprovado == "cursada"
+              ? "Cursada"
+              : "Matriculado"}
           </p>
         </h2>
-        <h2 className="Course-description Course-date">
-          {`${data.days.split("T")[0]} ${data.time}`}
-        </h2>
+        <h2 className="Course-description Course-date">{data.horario1}</h2>
       </div>
 
       <div className="Course-buttons">
@@ -52,7 +50,7 @@ function Course({ data, deleteCourse, requestDisenrollment, CourseId }) {
             <PersonIcon />
           </IconButton>
         </Tooltip>
-        {data.status == "Matriculado" ? (
+        {data.trancamento_aprovado == null ? (
           <Tooltip title="Trancar Disciplina" arrow>
             <IconButton
               color="fourth"
@@ -84,6 +82,7 @@ function Course({ data, deleteCourse, requestDisenrollment, CourseId }) {
           setOpenDialog(false);
         }}
         requestDisenrollment={requestDisenrollment}
+        data={data}
         idCourse={CourseId}
       />
       <ContactDialog

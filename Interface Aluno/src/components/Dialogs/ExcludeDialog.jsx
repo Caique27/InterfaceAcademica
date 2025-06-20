@@ -29,7 +29,7 @@ function ExcludeDialog(props) {
             color="fourth"
             variant="outlined"
             onClick={() => {
-              props.requestDisenrollment();
+              props.requestDisenrollment(props.id, props.idCourse);
               props.closeDialog();
             }}
           >

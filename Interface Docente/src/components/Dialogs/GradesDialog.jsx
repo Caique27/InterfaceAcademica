@@ -66,7 +66,12 @@ function GradesDialog(props) {
             color="fourth"
             variant="outlined"
             onClick={() => {
-              props.updateGrades(grade, frequency);
+              props.updateGrades(
+                grade,
+                frequency,
+                props.idStudent,
+                props.oferecimento
+              );
               props.closeDialog();
             }}
           >

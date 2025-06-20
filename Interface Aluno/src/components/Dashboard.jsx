@@ -19,14 +19,14 @@ function Dashboard() {
 
   useEffect(() => {
     const atualizarDados = async () => {
-      setCourses(await buscarDados());
+      setCourses(await buscarDados(student_Id));
     };
 
     atualizarDados();
   }, [mensagem]);
 
-  async function requestDisenrollment(enrollmentId) {
-    setMensagem(await solicitarTrancamento(enrollmentId));
+  async function requestDisenrollment(id_aluno, id_oferecimento) {
+    setMensagem(await solicitarTrancamento(id_aluno, id_oferecimento));
   }
 
   return (

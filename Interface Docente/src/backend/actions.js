@@ -1,120 +1,76 @@
 import axios from "axios";
 import Student from "../components/Student";
 
-export async function buscarDados(courseId) {
-  var formattedData = [
-    {
-      name: "Cálculo I",
-      days: "Seg. e Qua. 16h às 18h",
-      id: "001",
-      students: [
-        {
-          id: "1234",
-          name: "José da Silva",
-
-          status: "Matriculado",
-          nota: 4.5,
-          frequencia: 75,
-          email_aluno: "joao@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-        {
-          id: "5768",
-          name: "Pedro Ferreira",
-
-          status: "Trancada",
-          nota: 8.5,
-          frequencia: 55,
-          email_aluno: "pedro@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-        {
-          id: "6548",
-          name: "Maria Souza",
-
-          status: "Trancamento Solicitado",
-          nota: 8.5,
-          frequencia: 75,
-          email_aluno: "Maria@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-      ],
-    },
-    {
-      name: "Bancos de Dados II",
-      days: "Seg. e Qua. 20h às 22h",
-      id: "002",
-      students: [
-        {
-          id: "1234",
-          name: "Dimitri Sobrenome",
-
-          status: "Matriculado",
-          nota: 4.5,
-          frequencia: 75,
-          email_aluno: "dimitri@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-        {
-          id: "5768",
-          name: "Pedro Ferreira",
-
-          status: "Trancada",
-          nota: 8.5,
-          frequencia: 55,
-          email_aluno: "pedro@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-        {
-          id: "6548",
-          name: "Caique Alves",
-
-          status: "Trancamento Solicitado",
-          nota: 8.5,
-          frequencia: 75,
-          email_aluno: "Caique@usp.br",
-          telefone_aluno: "(11)91234-5678",
-        },
-      ],
-    },
-  ];
-
-  return formattedData;
+function getAnoAtual() {
+  return new Date().getFullYear();
+}
+function semestreAtual() {
+  const mes = new Date().getMonth() + 1; // getMonth() retorna de 0 (janeiro) a 11 (dezembro)
+  return mes >= 1 && mes <= 7 ? 1 : 2;
 }
 
-export async function buscarOferecimentos() {
-  const oferecimentos = [
+export async function buscarDados(professor_id) {
+  const queryResponse = await axios.post(
+    "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
     {
-      name: "Bancos de Dados II",
-      days: "Seg. e Qua. 10h às 12h",
-      id: "003",
+      resource: "courseStudents",
+      params: {
+        professor_id: professor_id,
+        year: getAnoAtual(),
+        term: semestreAtual(),
+      },
     },
     {
-      name: "Bancos de Dados II",
-      days: "Seg. e Qua. 20h às 22h",
-      id: "002",
-    },
-    {
-      name: "Cálculo 1",
-      days: "Ter. e Qui. 19h às 22h",
-      id: "001",
-    },
-  ];
-  return oferecimentos;
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return queryResponse.data;
 }
 
-export async function listaOferecimentos() {
-  var data = await buscarOferecimentos();
+export async function buscarOferecimentos(professor_id) {
+  const queryResponse = await axios.post(
+    "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
+    {
+      resource: "teachedCourses",
+      params: {
+        professor_id: professor_id,
+        year: getAnoAtual(),
+        term: semestreAtual(),
+      },
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return queryResponse.data;
+}
+
+export async function listaOferecimentos(professor_id) {
+  var data = await buscarOferecimentos(professor_id);
   return data;
 }
 
-export async function aprovarTrancamento(idTrancamento) {
+export async function aprovarTrancamento(id_aluno, id_oferecimento) {
   try {
-    // await query(`
-    //update consome set
-    //quantidade = ${quantidade} where
-    //idconsome = '${idConsumo}';
-    //`)
+    const queryResponse = await axios.post(
+      "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
+      {
+        resource: "approveDisenrollment",
+        params: {
+          student_id: id_aluno,
+          course_id: id_oferecimento,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return {
       open: true,
       error: false,
@@ -129,13 +85,30 @@ export async function aprovarTrancamento(idTrancamento) {
   }
 }
 
-export async function atualizarNotas(nota, frequencia) {
+export async function atualizarNotas(
+  nota,
+  frequencia,
+  id_aluno,
+  id_oferecimento
+) {
   try {
-    // await query(`
-    //update consome set
-    //quantidade = ${quantidade} where
-    //idconsome = '${idConsumo}';
-    //`)
+    const queryResponse = await axios.post(
+      "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
+      {
+        resource: "updateGrades",
+        params: {
+          grade: nota,
+          frequency: frequencia,
+          student_id: id_aluno,
+          course_id: id_oferecimento,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return {
       open: true,
       error: false,

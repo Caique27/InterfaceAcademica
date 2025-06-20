@@ -7,7 +7,13 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import ContactDialog from "./Dialogs/ContactDialog";
 import GradesDialog from "./Dialogs/GradesDialog";
 
-function Student({ data, approveDisenrollment, updateGrades, StudentId }) {
+function Student({
+  data,
+  approveDisenrollment,
+  updateGrades,
+  StudentId,
+  oferecimento,
+}) {
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <section className="Student-section">
@@ -25,14 +31,18 @@ function Student({ data, approveDisenrollment, updateGrades, StudentId }) {
             style={{
               marginLeft: "1%",
               color:
-                data.status == "Trancada"
+                data.trancamento_aprovado == true
                   ? "#F27373"
-                  : data.status == "Trancamento Solicitado"
+                  : data.trancamento_aprovado == false
                   ? "#F2B273"
                   : "#BBE1FA",
             }}
           >
-            {data.status}
+            {data.trancamento_aprovado == true
+              ? "Trancado"
+              : data.trancamento_aprovado == false
+              ? "Trancamento Solicitado"
+              : "Matriculado"}
           </p>
           <p style={{ marginLeft: "5%" }}>Nota: </p>
           <p
@@ -57,12 +67,12 @@ function Student({ data, approveDisenrollment, updateGrades, StudentId }) {
       </div>
 
       <div className="Student-buttons">
-        {data.status == "Trancamento Solicitado" ? (
+        {data.trancamento_aprovado == false ? (
           <Tooltip title="Aprovar trancamento" arrow>
             <IconButton
               color="fourth"
               onClick={() => {
-                approveDisenrollment();
+                approveDisenrollment(StudentId, oferecimento);
               }}
             >
               <EventAvailableIcon />
@@ -109,7 +119,9 @@ function Student({ data, approveDisenrollment, updateGrades, StudentId }) {
           setOpenDialog(false);
         }}
         updateGrades={updateGrades}
+        oferecimento={oferecimento}
         data={data}
+        idStudent={StudentId}
         //				mensagem={message}
       ></GradesDialog>
     </section>

@@ -29,8 +29,8 @@ function Dashboard() {
 
   useEffect(() => {
     const atualizarDados = async () => {
-      setCourses(await buscarDados());
-      setTeachedCourses(await listaOferecimentos());
+      setCourses(await buscarDados(professor_Id));
+      setTeachedCourses(await listaOferecimentos(professor_Id));
     };
 
     atualizarDados();
@@ -38,17 +38,19 @@ function Dashboard() {
 
   const changeChosenCourse = (id) => {
     for (var course in courses) {
-      if (Number(courses[course].id) == Number(id)) {
+      if (Number(courses[course].course_info.id_oferecimento) == Number(id)) {
         setDisplayedCourse(courses[course]);
         return;
       }
     }
   };
-  async function approveDisenrollment(disenrollmentId) {
-    setMensagem(await aprovarTrancamento(disenrollmentId));
+  async function approveDisenrollment(id_aluno, id_oferecimento) {
+    setMensagem(await aprovarTrancamento(id_aluno, id_oferecimento));
   }
-  async function updateGrades(grade, frequency) {
-    setMensagem(await atualizarNotas(grade, frequency));
+  async function updateGrades(grade, frequency, id_aluno, id_oferecimento) {
+    setMensagem(
+      await atualizarNotas(grade, frequency, id_aluno, id_oferecimento)
+    );
   }
 
   return (
@@ -73,7 +75,7 @@ function Dashboard() {
           </h1>
         ) : (
           <List
-            data={displayedCourse}
+            data={displayedCourse.course_info}
             approveDisenrollment={approveDisenrollment}
             updateGrades={updateGrades}
           />

@@ -1,108 +1,50 @@
 import axios from "axios";
 
-export async function buscarDados() {
-  var formattedData = [
-    {
-      category: "Disciplinas atuais",
-      courses: [
-        {
-          id: "0000000004",
-          name: "Cálculo I",
-          credits: "3",
-          days: "Seg. e Qua.",
-          time: "16h às 18h",
-          status: "Matriculado",
-          nota: 8.5,
-          frequencia: 75,
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-        {
-          id: "0000000005",
-          name: "Algoritmos e Estruturas de Dados II",
-          credits: "4",
-          days: "Qua. e Sex",
-          time: "19h às 22h",
-          status: "Trancada",
-          nota: 8.5,
-          frequencia: 75,
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-        {
-          id: "0000000011",
-          name: "Matemática Discreta",
-          credits: "3",
-          days: "Seg. e Qua.",
-          time: "19h às 22h",
-          status: "Trancamento Solicitado",
-          nota: 8.5,
-          frequencia: 75,
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-      ],
-    },
-    {
-      category: "Disciplinas já cursadas",
-      courses: [
-        {
-          id: "0000000004",
-          name: "Computação Orientada à Objetos",
-          credits: "3",
-          days: "1° Sem",
-          time: "2024",
-          status: "Cursada",
-          nota: 8.5,
-          frequencia: 75,
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-        {
-          id: "0000000005",
-          name: "Algoritmos e Estruturas de Dados I",
-          credits: "4",
-          days: "1° Sem",
-          time: "2024",
-          status: "Cursada",
-          nota: 8.5,
-          frequencia: 75,
-
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-        {
-          id: "0000000011",
-          name: "Introdução à Análise de Algoritmos",
-          credits: "3",
-          days: "2° Sem",
-          time: "2023",
-          status: "Cursada",
-          nota: 8.5,
-          frequencia: 75,
-
-          nome_professor: "João de Souza",
-          email_professor: "joao@usp.br",
-          telefone_professor: "(11)91234-5678",
-        },
-      ],
-    },
-  ];
-  return formattedData;
+function getAnoAtual() {
+  return new Date().getFullYear();
+}
+function semestreAtual() {
+  const mes = new Date().getMonth() + 1; // getMonth() retorna de 0 (janeiro) a 11 (dezembro)
+  return mes >= 1 && mes <= 7 ? 1 : 2;
 }
 
-export async function solicitarTrancamento(idMatricula) {
+export async function buscarDados(student_id) {
+  const queryResponse = await axios.post(
+    "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
+    {
+      resource: "courses",
+      params: {
+        student_id: student_id,
+        year: getAnoAtual(),
+        term: semestreAtual(),
+      },
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return queryResponse.data;
+}
+
+export async function solicitarTrancamento(id_aluno, id_oferecimento) {
   try {
-    // await query(`
-    //update consome set
-    //quantidade = ${quantidade} where
-    //idconsome = '${idConsumo}';
-    //`)
+    const queryResponse = await axios.post(
+      "https://f0esm5kym1.execute-api.us-east-1.amazonaws.com/default/postgre",
+      {
+        resource: "requestDisenrollment",
+        params: {
+          student_id: id_aluno,
+          course_id: id_oferecimento,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return {
       open: true,
       error: false,
